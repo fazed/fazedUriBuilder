@@ -91,7 +91,7 @@ class UriBuilder
      *
      * @return string
      */
-    public function getUrl(): string
+    public function getUrl()
     {
         return $this->baseUrl;
     }
