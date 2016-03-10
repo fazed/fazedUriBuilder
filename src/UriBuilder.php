@@ -34,14 +34,11 @@ class UriBuilder
      *
      * @param  string  $base
      * @param  boolean $secured
-     * @return $this
      */
     public function __construct($base, $secured = false)
     {
         $this->setBaseUrl($base);
         $this->setSecured($secured);
-
-        return $this;
     }
 
     /**
@@ -51,7 +48,7 @@ class UriBuilder
      * @param  boolean $secured
      * @return $this
      */
-    public static function make($base, $secured = false)
+    public static function make(string $base, bool $secured = false): UriBuilder
     {
         return new self($base, $secured);
     }
@@ -63,7 +60,7 @@ class UriBuilder
      * @return $this
      * @throws \Exception
      */
-    public function setBaseUrl($base)
+    public function setBaseUrl(string $base): UriBuilder
     {
         if (! static::validateUrl($base)) {
             throw new \Exception('Passed string not a valid URL');
@@ -102,7 +99,7 @@ class UriBuilder
      * @param  bool $trailingSlash
      * @return string
      */
-    public function getBuildUrl($trailingSlash = false)
+    public function getBuildUrl(bool $trailingSlash = false): string
     {
         return $this->buildUrl($trailingSlash);
     }
@@ -113,7 +110,7 @@ class UriBuilder
      * @param  bool $secured
      * @return $this
      */
-    public function setSecured($secured)
+    public function setSecured($secured): UriBuilder
     {
         $this->secured = $secured;
 
@@ -125,7 +122,7 @@ class UriBuilder
      *
      * @return mixed
      */
-    public function getFileExtension()
+    public function getFileExtension(): string
     {
         return $this->fileExtension;
     }
@@ -135,7 +132,7 @@ class UriBuilder
      *
      * @param string $extension
      */
-    public function setFileExtension($extension)
+    public function setFileExtension($extension): UriBuilder
     {
         $this->fileExtension = $extension;
 
@@ -147,7 +144,7 @@ class UriBuilder
      *
      * @return array
      */
-    public function getSections()
+    public function getSections(): array
     {
         return $this->sections;
     }
@@ -158,7 +155,7 @@ class UriBuilder
      * @param  array $sections
      * @return $this
      */
-    public function setSections(array $sections)
+    public function setSections(array $sections): UriBuilder
     {
         $this->sections = $sections;
 
@@ -171,7 +168,7 @@ class UriBuilder
      * @param  array $sections
      * @return $this
      */
-    public function appendSections(...$sections)
+    public function appendSections(...$sections): UriBuilder
     {
         $this->sections = array_merge($this->sections, $sections);
 
@@ -184,7 +181,7 @@ class UriBuilder
      * @param  array $sections
      * @return $this
      */
-    public function prependSections(...$sections)
+    public function prependSections(...$sections): UriBuilder
     {
         $this->sections = array_merge($sections, $this->sections);
 
@@ -196,7 +193,7 @@ class UriBuilder
      *
      * @return $this
      */
-    public function shiftSection()
+    public function shiftSection(): UriBuilder
     {
         if (sizeof($this->parameters) > 0) {
             $this->sections = array_shift($this->sections);
@@ -210,7 +207,7 @@ class UriBuilder
      *
      * @return $this
      */
-    public function popSection()
+    public function popSection(): UriBuilder
     {
         if (sizeof($this->parameters) > 0) {
             $this->sections = array_pop($this->sections);
@@ -226,7 +223,7 @@ class UriBuilder
      * @param  int    $limit
      * @return $this
      */
-    public function removeSection($section, $limit = 0)
+    public function removeSection(string $section, int $limit = 0): UriBuilder
     {
         $instances = array_keys($this->sections, $section);
 
@@ -253,7 +250,7 @@ class UriBuilder
      * @param  bool $stringfy
      * @return mixed
      */
-    public function getParameters($stringfy = false)
+    public function getParameters(bool $stringfy = false)
     {
         return $stringfy ? $this->buildParamString() : $this->parameters;
     }
@@ -264,7 +261,7 @@ class UriBuilder
      * @param  array $parameters
      * @return $this
      */
-    public function setParameters(array $parameters)
+    public function setParameters(array $parameters): UriBuilder
     {
         $this->parameters = $parameters;
 
@@ -277,7 +274,7 @@ class UriBuilder
      * @param  array $parameters
      * @return $this
      */
-    public function appendParameters(...$parameters)
+    public function appendParameters(...$parameters): UriBuilder
     {
         foreach ($parameters as $params) {
             $this->parameters = array_merge($this->parameters, $params);
@@ -291,7 +288,7 @@ class UriBuilder
      *
      * @return $this
      */
-    public function shiftParameter()
+    public function shiftParameter(): UriBuilder
     {
         if (sizeof($this->parameters) > 0) {
             $this->parameters = array_shift($this->parameters);
@@ -305,7 +302,7 @@ class UriBuilder
      *
      * @return $this
      */
-    public function popParameter()
+    public function popParameter(): UriBuilder
     {
         if (sizeof($this->parameters) > 0) {
             $this->parameters = array_pop($this->parameters);
@@ -320,7 +317,7 @@ class UriBuilder
      * @param  bool $trailingSlash
      * @return string
      */
-    private function buildUrl($trailingSlash)
+    private function buildUrl(bool $trailingSlash): string
     {
         $url = sprintf('http%s://%s/', $this->secured ? 's' : '', $this->baseUrl);
         $url .= ltrim($this->buildSectionString($trailingSlash), '/');
@@ -336,7 +333,7 @@ class UriBuilder
      * @param  bool $trailing
      * @return string
      */
-    private function buildSectionString($trailing)
+    private function buildSectionString(bool $trailing): string
     {
         if (sizeof($this->sections)) {
             return implode('/', $this->sections) . ($trailing ? '/' : '');
@@ -350,7 +347,7 @@ class UriBuilder
      *
      * @return string
      */
-    private function buildParamString()
+    private function buildParamString(): string
     {
         $paramString = sizeof($this->parameters) ? '?' : '';
 
@@ -367,7 +364,7 @@ class UriBuilder
      * @param  string $url
      * @return array
      */
-    private function parseSections($url)
+    private function parseSections(string $url): array
     {
         $sections = explode('/', $url);
 
@@ -381,7 +378,7 @@ class UriBuilder
      * @return array
      * @throws \Exception
      */
-    private function parseParameters($url)
+    private function parseParameters(string $url): array
     {
         if (preg_match_all('/(?<=\?|\&)([a-zA-z]+)\=([a-zA-z0-9]+)?/', $url, $matches, PREG_SET_ORDER) === false) {
             throw new \Exception('An error occured while parsing url parameters.');
@@ -402,7 +399,7 @@ class UriBuilder
      * @param  string $url
      * @return bool
      */
-    public static function validateUrl($url)
+    public static function validateUrl(string $url): bool
     {
         $regex = '/(?i)\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:\'".,<>?Ã‚Â«Ã‚Â»Ã¢â‚¬Å“Ã¢â‚¬ÂÃ¢â‚¬ËœÃ¢â‚¬â„¢]))/';
 
@@ -414,7 +411,7 @@ class UriBuilder
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getBuildUrl();
     }
