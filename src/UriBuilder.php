@@ -279,7 +279,7 @@ class UriBuilder
      */
     public function appendParameters(array $parameters)
     {
-        $this->parameters = array_merge($this->parameters, $params);
+        $this->parameters = array_merge($this->parameters, $parameters);
 
         return $this;
     }
