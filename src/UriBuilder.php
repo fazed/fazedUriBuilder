@@ -171,7 +171,7 @@ class UriBuilder
      * @param  array $sections
      * @return $this
      */
-    public function appendSections(array $sections)
+    public function appendSections(...$sections)
     {
         $this->sections = array_merge($this->sections, $sections);
 
@@ -184,7 +184,7 @@ class UriBuilder
      * @param  array $sections
      * @return $this
      */
-    public function prependSections(array $sections)
+    public function prependSections(...$sections)
     {
         $this->sections = array_merge($sections, $this->sections);
 
@@ -277,9 +277,11 @@ class UriBuilder
      * @param  array $parameters
      * @return $this
      */
-    public function appendParameters(array $parameters)
+    public function appendParameters(...$parameters)
     {
-        $this->parameters = array_merge($this->parameters, $params);
+        foreach ($parameters as $params) {
+            $this->parameters = array_merge($this->parameters, $params);
+        }
 
         return $this;
     }
