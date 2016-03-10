@@ -34,14 +34,11 @@ class UriBuilder
      *
      * @param  string  $base
      * @param  boolean $secured
-     * @return $this
      */
     public function __construct($base, $secured = false)
     {
         $this->setBaseUrl($base);
         $this->setSecured($secured);
-
-        return $this;
     }
 
     /**
